@@ -2,7 +2,10 @@ import processing.serial.*;
 
 
 int zoneNumber, mode;
-int green, red, blue, green_p, red_p, blue_p;
+
+int[] green = new int[setting.WINDOW_MAIN_X/10];
+int[] red = new int[setting.WINDOW_MAIN_X/10];
+int[] blue = new int[setting.WINDOW_MAIN_X/10];
 int[] sensors = new int[5];
 int count;
 int[] sensors_p = new int[5];
@@ -10,6 +13,7 @@ int[] sensors_p = new int[5];
 int view;
 
 subWindow sub1 ;
+drawFunction d ;
 
 PImage birdEye;//俯瞰図
 
@@ -17,15 +21,30 @@ PImage birdEye;//俯瞰図
 public class setting {
   public static final String SERIAL_COM_PORT = "COM7";
   public static final int SERIAL_COM_BAUND_RATE = 9600;
+
+
+
+  public static final int WINDOW_MAIN_X = 1200;
+  public static final int WINDOW_MAIN_Y = 400;
 }
 
 
 void setup() {
+
+  d= new drawFunction();
+
+
   birdEye = loadImage("media/image1.png"); 
   view=0;
-  size(1200, 400);
+  size(setting.WINDOW_MAIN_X, setting.WINDOW_MAIN_Y);
   background(255);
 
+
+  for (int i=0; i<red.length; i++) {
+    red[i]=0;
+    green[i]=0;
+    blue[i]=0;
+  }
 
   /*
   sub1 = new subWindow(this);
@@ -40,46 +59,29 @@ void setup() {
   // String arduinoPort = Serial.list()[1];
   // port = new Serial(this, arduinoPort, 9600 );
   //zoneNumber = 0;
+  /*
   red_p = 0; 
-  green_p = 0; 
-  blue_p = 0;
+   green_p = 0; 
+   blue_p = 0;
+   */
 }
 
 void draw() {
   background(255);
 
-
-
-  drawFunction.drawTab(this, view);
+  d.drawTab(this, view);
   switch(view) {
-  case 0://初期
+  case 0://main
 
-    image(birdEye, 0, drawFunction.TAB_Y);
+    image(birdEye, 0, d.TAB_Y);
     break;
+  case 1://line grapg
+    d.drawColorLineGraph(this);
+    break;
+
   }
 
 
-  /*
-  float y_p, y;
-   
-   
-   
-   y_p = map(red_p, 0, 100, height*0.9, height*0.1);
-   y = map(red, 0, 100, height*0.9, height*0.1);
-   stroke(255, 0, 0);
-   line((count-1)*10, y_p, (count)*10, y );
-   
-   y_p = map(green_p, 0, 100, height*0.9, height*0.1);
-   y = map(green, 0, 100, height*0.9, height*0.1);
-   stroke(0, 255, 0);
-   line((count-1)*10, y_p, (count)*10, y );
-   
-   
-   y_p = map(blue_p, 0, 100, height*0.9, height*0.1);
-   y = map(blue, 0, 100, height*0.9, height*0.1);
-   stroke(0, 0, 255);
-   line((count-1)*10, y_p, (count)*10, y );
-   */
   /*
   red = map(sensors[2],0, 100, 0, 255);
    green = map(sensors[3],0, 100, 0, 255);
@@ -129,21 +131,22 @@ void serialEvent(Serial p) { // p is anonymous
   if ( p.available() >= 6 ) { 
     if ( p.read() == 'H' ) {
 
-      red_p = red;
-      green_p = green;
-      blue_p = blue;
+      // red_p = red;
+      // green_p = green;
+      // blue_p = blue;
 
 
       zoneNumber = p.read();
       mode =  p.read();
-      red =  p.read();
-      green = p.read();
-      blue =  p.read();
+      red[count] =  p.read();
+      green[count] = p.read();
+      blue[count] =  p.read();
       p.clear(); // 念のためクリア
 
       // print("zone = ");
       // println((int)zoneNumber, (int)mode);
       ++count;
+      if (count>=red.length)count=0;
     }
   }
 
