@@ -1,11 +1,22 @@
 import processing.serial.*;
 
 
+Serial port;
+
+
 int zoneNumber, mode;
 
 int[] green = new int[setting.WINDOW_MAIN_X/10];
 int[] red = new int[setting.WINDOW_MAIN_X/10];
 int[] blue = new int[setting.WINDOW_MAIN_X/10];
+
+int max_x, max_y, min_x, min_y;
+int mx, my, ax, ay, az, azimuth;
+
+
+
+
+
 int[] sensors = new int[5];
 int count;
 int[] sensors_p = new int[5];
@@ -19,8 +30,8 @@ PImage birdEye;//俯瞰図
 
 
 public class setting {
-  public static final String SERIAL_COM_PORT = "COM7";
-  public static final int SERIAL_COM_BAUND_RATE = 9600;
+  public static final String SERIAL_COM_PORT = "COM3";
+  public static final int SERIAL_COM_BAUND_RATE = 57600;
 
 
 
@@ -57,7 +68,7 @@ void setup() {
   count = 0;
   //  println(Serial.list());
   // String arduinoPort = Serial.list()[1];
-  // port = new Serial(this, arduinoPort, 9600 );
+  port = new Serial(this, setting.SERIAL_COM_PORT, setting.SERIAL_COM_BAUND_RATE );
   //zoneNumber = 0;
   /*
   red_p = 0; 
@@ -78,7 +89,6 @@ void draw() {
   case 1://line grapg
     d.drawColorLineGraph(this);
     break;
-
   }
 
 
@@ -99,7 +109,44 @@ void draw() {
   text((int)zoneNumber, 200, height-10);
   text(", ", 225, height-10);
   text((int)mode, 250, height-10);
+
+
+  textSize(15);
+  text("max_x/y = ", 400, 20);
+  text(max_x, 550, 20);
+  text(max_y, 600, 20);
+
+  text("min_x/y = ", 400, 40);
+  text(min_x, 550, 40);
+  text(min_y, 600, 40);
+
+
+  text("acc xyz  = ", 400, 60);
+  text(ax, 550, 60);
+  text(ay, 600, 60);
+  text(az, 650, 60);
+
+  text("mag xy  = ", 400, 80);
+  text(mx, 550, 80);
+  text(my, 600, 80);
+
+
+  text("azimth = ", 400, 100);
+  text(azimuth, 550, 100);
+
+
+
+  text("RGB  = ", 400, 120);
+  text(red[count], 550, 120);
+  text(green[count], 600, 120);
+  text(blue[count], 650, 120);
+
+  text("count  = ", 400, 140);
+  text(count, 550, 140);
+
   noFill();
+
+
 
 
   if ( count == 120 ) {
@@ -125,30 +172,71 @@ void mousePressed() {
 
 
 void serialEvent(Serial p) { // p is anonymous  
-  Serial port ;//= com.getSerialNumber();
+  // Serial port ;//= com.getSerialNumber();
   // if(port!=p)return;
 
-  if ( p.available() >= 6 ) { 
+  if ( p.available() >= 26 ) { 
     if ( p.read() == 'H' ) {
-
-      // red_p = red;
-      // green_p = green;
-      // blue_p = blue;
-
-
       zoneNumber = p.read();
       mode =  p.read();
       red[count] =  p.read();
       green[count] = p.read();
       blue[count] =  p.read();
-      p.clear(); // 念のためクリア
+
+      ++count;
+      if (count>=red.length)count=0;
+
+      //get  max/min values of geomagnetic sensor
+      int h = p.read(), l = p.read(); 
+      max_x=(int)(h<<8|l); 
+      if (max_x > 32767) max_x -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      max_y=(int)(h<<8|l); 
+      if (max_y > 32767) max_y -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      min_x=(int)(h<<8|l); 
+      if (min_x > 32767) min_x -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      min_y=(int)(h<<8|l); 
+      if (min_y > 32767) min_y -= 65536;         
+      // get the current sensor values of geomagnetic sensor
+      h = p.read(); 
+      l = p.read(); 
+      mx=(int)(h<<8|l); 
+      if (mx > 32767) mx -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      my=(int)(h<<8|l); 
+      if (my > 32767) my -= 65536;
+
+      h = p.read(); 
+      l = p.read();
+      ax=(int)(h<<8|l); 
+      if (ax > 32767) ax -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      ay=(int)(h<<8|l); 
+      if (ay > 32767) ay -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      az=(int)(h<<8|l); 
+      if (az > 32767) az -= 65536;         
+      //get the direction      
+      h = p.read(); 
+      l = p.read(); 
+      azimuth=(int)(h<<8|l); 
+      if (azimuth > 32767) azimuth -= 65536;
 
       // print("zone = ");
       // println((int)zoneNumber, (int)mode);
-      ++count;
-      if (count>=red.length)count=0;
     }
+
+    p.clear(); // 念のためクリア
   }
+
 
   //  port.write("A");
 }
