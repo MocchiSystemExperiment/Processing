@@ -9,6 +9,14 @@ public static class drawSetting {
 
 
 public class drawFunction extends drawSetting{
+  PImage star; // for position
+  PImage birdEye;//俯瞰図
+  drawFunction() {
+
+    birdEye = loadImage("media/image1.png"); 
+
+    star = loadImage("media/star.png");
+  }
 
 
 
