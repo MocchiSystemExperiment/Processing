@@ -4,18 +4,50 @@ public static class drawSetting {
 
   public static final String[] TAB_NAME = {
     "main", "sub", "sub2"
-  };  
+  };
 }
 
 
-public class drawFunction extends drawSetting{
+public class drawFunction extends drawSetting {
+
   PImage star; // for position
   PImage birdEye;//俯瞰図
+
+
   drawFunction() {
 
     birdEye = loadImage("media/image1.png"); 
 
     star = loadImage("media/star.png");
+  }
+
+
+
+  public  void drawCurrentPosition(PApplet a) {
+    if (zoneNumber==1)a.image(d.star, 265, 33);
+    else if (zoneNumber==2)a.image(d.star, 144, 33);
+    else if (zoneNumber==3)a.image(d.star, 25, 33);
+    else if (zoneNumber==4)a.image(d.star, 22, 231);
+    else if (zoneNumber==5)a.image(d.star, 144, 231);
+    else if (zoneNumber==6)a.image(d.star, 265, 231);
+    else if (zoneNumber==7) {
+      a.image(d.star, 357, 231);
+      textSize(50);
+      fill(0,255,0);
+      text("GOAL! ", 100, 205);
+      noFill();
+      
+    } else if (zoneNumber==8) {
+      textSize(50);
+      fill(0,255,255);
+      text("Moving", 100, 180);
+      noFill();
+    } else if (zoneNumber==0){
+      textSize(50);
+      fill(0,255,0);
+      text("NO DATA", 100, 180);
+      noFill();
+    }
   }
 
 
@@ -42,24 +74,9 @@ public class drawFunction extends drawSetting{
       stroke(0, 0, 255);
       line(i*10, y_p, (i+1)*10, y );
     }
-
-    stroke(255);
-    fill(255);
-    rect(0, height-50, 300, 50);
-    textSize(50);
-    fill(0);
-    text("zone = ", 10, height-10);
-    text((int)zoneNumber, 200, height-10);
-    text(", ", 225, height-10);
-    text((int)mode, 250, height-10);
-    noFill();
-
-
-    if ( count == 120 ) {
-      count = 0;
-      background(255);
-    }
   }
+
+
 
   public  void drawTab(PApplet a, int view) {
     a.textSize(14);

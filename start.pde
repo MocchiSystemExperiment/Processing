@@ -13,6 +13,8 @@ int[] blue = new int[setting.WINDOW_MAIN_X/10];
 int max_x, max_y, min_x, min_y;
 int mx, my, ax, ay, az, azimuth;
 
+long intervalTime;
+
 
 
 
@@ -26,7 +28,7 @@ int view;
 subWindow sub1 ;
 drawFunction d ;
 
-PImage birdEye;//俯瞰図
+//PImage birdEye;//俯瞰図
 
 
 public class setting {
@@ -45,7 +47,6 @@ void setup() {
   d= new drawFunction();
 
 
-  birdEye = loadImage("media/image1.png"); 
   view=0;
   size(setting.WINDOW_MAIN_X, setting.WINDOW_MAIN_Y);
   background(255);
@@ -66,15 +67,8 @@ void setup() {
 
 
   count = 0;
-  //  println(Serial.list());
-  // String arduinoPort = Serial.list()[1];
-  port = new Serial(this, setting.SERIAL_COM_PORT, setting.SERIAL_COM_BAUND_RATE );
-  //zoneNumber = 0;
-  /*
-  red_p = 0; 
-   green_p = 0; 
-   blue_p = 0;
-   */
+  intervalTime=0;
+  //port = new Serial(this, setting.SERIAL_COM_PORT, setting.SERIAL_COM_BAUND_RATE );
 }
 
 void draw() {
@@ -84,7 +78,12 @@ void draw() {
   switch(view) {
   case 0://main
 
-    image(birdEye, 0, d.TAB_Y);
+    image(d.birdEye, 0, d.TAB_Y);
+    
+    d.drawCurrentPosition(this);
+    
+    
+    
     break;
   case 1://line grapg
     d.drawColorLineGraph(this);
@@ -100,9 +99,11 @@ void draw() {
    ellipse(count*10, 20, 10, 10 );
    */
 
+
+
   stroke(255);
   fill(255);
-  rect(0, height-50, 300, 50);
+ // rect(0, height-50, 300, 50);
   textSize(50);
   fill(0);
   text("zone = ", 10, height-10);
@@ -143,6 +144,15 @@ void draw() {
 
   text("count  = ", 400, 140);
   text(count, 550, 140);
+
+  text("intervalTime  = ", 400, 160);
+  text( intervalTime , 550, 160);
+
+
+  text("mouse  = ", 400, 180);
+  text(mouseX, 550, 180);
+  text(mouseY, 600, 180);
+
 
   noFill();
 
@@ -229,6 +239,10 @@ void serialEvent(Serial p) { // p is anonymous
       l = p.read(); 
       azimuth=(int)(h<<8|l); 
       if (azimuth > 32767) azimuth -= 65536;
+
+
+      intervalTime = ((((((p.read()<<8)+p.read())<<8)+p.read())<<8)+p.read());
+
 
       // print("zone = ");
       // println((int)zoneNumber, (int)mode);
