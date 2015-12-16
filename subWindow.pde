@@ -28,33 +28,10 @@ class subWindow  extends PApplet {
     frame.pack();
   }
 
-
-
-
-
-
-
   void setup() {
   }
 
   void draw() {
   }
-
-
-/*
-
-
-  public void connectSerial() {
-    try {
-      // println("Selected: " + ports[port_index] + ", " + rates[rate_index] );
-      port = new Serial(main, setting.SERIAL_COM_PORT, setting.SERIAL_COM_BAUND_RATE);
-    } 
-    catch (Exception e) {
-      port = null;
-    }
-  }
-  
-  
-  */
 }
 
