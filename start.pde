@@ -50,28 +50,14 @@ int  zone1_point[] = new int[5];
 HScrollbar hs1, hs2;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 public class setting {
   public static final String SERIAL_COM_PORT = "COM10";
   public static final int SERIAL_COM_BAUND_RATE = 57600;
 
 
 
-  public static final int WINDOW_MAIN_X = 1200;
-  public static final int WINDOW_MAIN_Y = 600;
+  public static final int WINDOW_MAIN_X = 1280;
+  public static final int WINDOW_MAIN_Y = 720;
 }
 
 
@@ -133,7 +119,10 @@ void draw() {
   case 1://line grapg
     d.drawColorLineGraph(this);
     break;
-
+  case 2:
+   
+    drawZone3();
+    break;
 
   case 3:
 
@@ -243,15 +232,16 @@ void serialEvent(Serial p) { // p is anonymous
   if ( p.available() >= 34 ) {
     int f=p.read();
     if (f  == 'Z' ) {
-      if (p.read()== '1') {
+      int point = p.read();
+      if (point == '1') {
         zone1_point[0]=1;
-      } else if (p.read()== '2') {
+      } else if (point== '2') {
         zone1_point[1]=1;
-      } else if (p.read()== '3') {
+      } else if (point== '3') {
         zone1_point[2]=1;
-      } else if (p.read()== '4') {
+      } else if (point== '4') {
         zone1_point[3]=1;
-      } else if (p.read()== '5') {
+      } else if (point== '5') {
         zone1_point[4]=1;
       }
       return;
