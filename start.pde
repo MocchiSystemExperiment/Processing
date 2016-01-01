@@ -4,7 +4,16 @@ import processing.serial.*;
 Serial port;
 
 
-int zoneNumber, mode;
+
+//program stats
+//0:not connect
+//1:connect
+//2:disconnect
+int status=0;
+float lastConnectedTime=0;
+
+
+int zoneNumber, mode;//Arduino's variables
 
 int[] green = new int[setting.WINDOW_MAIN_X/10];
 int[] red = new int[setting.WINDOW_MAIN_X/10];
@@ -48,7 +57,7 @@ drawFunction d ;
 int  zone1_point[] = new int[5];
 
 HScrollbar hs1, hs2;
-
+icon[] ic;
 
 public class setting {
   public static final String SERIAL_COM_PORT = "COM10";
@@ -62,30 +71,32 @@ public class setting {
 
 
 void setup() {
-
+  //make instances
   d= new drawFunction();
   hs1 = new HScrollbar(800, height-50, width, 16, 16);
   hs2 = new HScrollbar(1000, height-50, width, 16, 16);
 
+  //ic = new icon[drawSetting.ICON_NUM];
+  ic = new icon[4];
+  
+  ic[0] = new icon();
+  ic[0].init(1);//menu->zumo initialize
+  ic[0].setBackground(134,226,213);
+  ic[0].setPosition(100,400);
 
-  view=0;
+
   size(setting.WINDOW_MAIN_X, setting.WINDOW_MAIN_Y);
   background(255);
 
 
+
+  //initialize variables
+  view=0;
   for (int i=0; i<red.length; i++) {
     red[i]=0;
     green[i]=0;
     blue[i]=0;
   }
-
-  /* 
-   sub1 = new subWindow(this);
-   sub1.size(1000,300);
-   
-   */
-
-
 
   for (int i=0; i<5000; i++) {
     motorLLog[i]=-1;
@@ -103,7 +114,12 @@ void setup() {
 void draw() {
   background(255);
 
+
+
   d.drawTab(this, view);
+  ic[0].draw();
+  
+ 
   switch(view) {
   case 0://main
 
@@ -113,6 +129,8 @@ void draw() {
 
 
     d.drawInfo(this, 800);
+    
+    
 
 
     break;
@@ -120,7 +138,7 @@ void draw() {
     d.drawColorLineGraph(this);
     break;
   case 2:
-   
+
     drawZone3();
     break;
 
@@ -339,7 +357,7 @@ void serialEvent(Serial p) { // p is anonymous
       }
 
 
-
+      lastConnectedTime=millis();
 
       //p.clear(); // 念のためクリア
     }
@@ -383,6 +401,7 @@ void calcZone6() {
       minJ=j;
     }
   }
-  
+
   zone6Rate = minJ;
 }
+

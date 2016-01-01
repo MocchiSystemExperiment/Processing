@@ -8,6 +8,9 @@ public static class drawSetting {
   public static final String[] ZONE6_TAB_NAME = {
     "auto", "man"
   };
+  
+  
+  public static final int ICON_NUM = 4;
 }
 
 
@@ -15,6 +18,8 @@ public class drawFunction extends drawSetting {
 
   PImage star; // for position
   PImage birdEye;//俯瞰図
+  
+  PImage icon[][];
 
 
   drawFunction() {
@@ -22,6 +27,9 @@ public class drawFunction extends drawSetting {
     birdEye = loadImage("media/image1.png"); 
 
     star = loadImage("media/star.png");
+    
+    icon = new PImage[drawSetting.ICON_NUM][3];
+    
   }
 
 
