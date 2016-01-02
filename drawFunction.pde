@@ -170,24 +170,32 @@ public class drawFunction extends drawSetting {
   public  void drawColorLineGraph(PApplet a) {
 
     float y_p, y;
+    
+    stroke(0, 0, 0);
+    line(0,height*0.8+1,width,height*0.8+1);
+    line(0,height*0.5-1,width,height*0.5-1);
 
     for (int i=1; i<red.length; i++) {
 
-      y_p = map(red[i-1], 0, 100, height*0.9, height*0.1);
-      y = map(red[i], 0, 100, height*0.9, height*0.1);
+      y_p = map(red[i-1], 0, 100, height*0.8, height*0.5);
+      y = map(red[i], 0, 100, height*0.8, height*0.5);
       stroke(255, 0, 0);
-      line(i*10, y_p, (i+1)*10, y );
+      line((i-1)*10, y_p, i*10, y );
 
-      y_p = map(green[i-1], 0, 100, height*0.9, height*0.1);
-      y = map(green[i], 0, 100, height*0.9, height*0.1);
+      y_p = map(green[i-1], 0, 100, height*0.8, height*0.5);
+      y = map(green[i], 0, 100, height*0.8, height*0.5);
       stroke(0, 255, 0);
-      line(i*10, y_p, (i+1)*10, y );
+      line((i-1)*10, y_p, i*10, y );
 
 
-      y_p = map(blue[i-1], 0, 100, height*0.9, height*0.1);
-      y = map(blue[i], 0, 100, height*0.9, height*0.1);
+      y_p = map(blue[i-1], 0, 100, height*0.8, height*0.5);
+      y = map(blue[i], 0, 100, height*0.8, height*0.5);
       stroke(0, 0, 255);
-      line(i*10, y_p, (i+1)*10, y );
+      line((i-1)*10, y_p, i*10, y );
+      
+      stroke(red[i], green[i],blue[i]);
+      fill(red[i], green[i],blue[i]);
+      rect((i-1)*10,height*0.3,i*10,height*0.1);
     }
   }
 
