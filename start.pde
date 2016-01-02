@@ -83,8 +83,18 @@ void setup() {
   ic[0].init(1);//menu->zumo initialize
   ic[0].setBackground(134,226,213);
   ic[0].setPosition(100,400);
-
-
+  ic[1] = new icon();
+  ic[1].init(2);//menu->color Sensor initialize
+  ic[1].setBackground(134,226,213);
+  ic[1].setPosition(210,400);
+  
+  ic[2] = new icon();
+  ic[2].init(3);//menu->color Sensor initialize
+  ic[2].setBackground(134,226,213);
+  ic[2].setPosition(320,400);
+  
+  
+  
   size(setting.WINDOW_MAIN_X, setting.WINDOW_MAIN_Y);
   background(255);
 
@@ -118,7 +128,8 @@ void draw() {
 
   d.drawTab(this, view);
   ic[0].draw();
-  
+  ic[1].draw();
+  ic[2].draw();
  
   switch(view) {
   case 0://main
@@ -213,8 +224,19 @@ void draw() {
     background(255);
   }
 }
-
+void mouseDragged(){
+  ic[0].checkDrag();
+  ic[1].checkDrag();
+  ic[2].checkDrag();
+}
 void mousePressed() {
+  
+  ic[0].checkClick();
+  ic[1].checkClick();
+  ic[2].checkClick();
+
+  
+  
   //menu select tab
   if (mouseY<drawFunction.TAB_Y) {
     for (int i=0; i < drawFunction.TAB_NAME.length; i++) {
@@ -248,6 +270,8 @@ void serialEvent(Serial p) { // p is anonymous
   // if(port!=p)return;
 
   if ( p.available() >= 34 ) {
+    lastConnectedTime=millis();
+  
     int f=p.read();
     if (f  == 'Z' ) {
       int point = p.read();
@@ -357,7 +381,6 @@ void serialEvent(Serial p) { // p is anonymous
       }
 
 
-      lastConnectedTime=millis();
 
       //p.clear(); // 念のためクリア
     }

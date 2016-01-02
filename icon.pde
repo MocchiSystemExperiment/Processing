@@ -24,12 +24,20 @@ public class icon {
   void init(int t) {
     type=t;
 
-    if (t==1) {//zumo RIPTIDE
+    if (t==1) {//zumo
 
       data = new PImage[3];
       data[0] = loadImage("media/zumo0.png");
       data[1] = loadImage("media/zumo1.png");
       data[2] = loadImage("media/zumo2.png");
+    }
+    else if (t==2){// colorsensor
+       data = new PImage[1];
+      data[0] = loadImage("media/color0.png");    
+    }
+   else if (t==3){// colorsensor
+       data = new PImage[1];
+      data[0] = loadImage("media/zone6.png");    
     }
   }  
   void setBackground(int r, int g, int b) {
@@ -49,9 +57,32 @@ public class icon {
     size_y=Y;
   }
   void checkClick() {
+    if(mouseX>x && mouseX<= x+size_x && mouseY > y && mouseY <= y+size_y){
+      clicked();    
+      
+    }
+  }
+  
+  
+  
+  void checkDrag() {
+    if(mouseX>x && mouseX<= x+size_x && mouseY > y && mouseY <= y+size_y){
+      dragged();    
+      
+    }
   }
 
+  void clicked(){
+    //iconColor[0]=0;
+    if(type==1)view=0;
+    else if(type==2)view=1;
+    else if(type==3)view=3;
+  }
 
+  void dragged(){
+    x+=mouseX-pmouseX;
+    y+=mouseY-pmouseY;
+  }
 
   void draw() {
 
