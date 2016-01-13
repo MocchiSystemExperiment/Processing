@@ -57,7 +57,7 @@ drawFunction d ;
 int  zone1_point[] = new int[5];
 
 HScrollbar hs1, hs2;
-icon[] ic;
+ellipseIcon[] ic;
 
 public class setting {
   public static final String SERIAL_COM_PORT = "COM10";
@@ -77,18 +77,18 @@ void setup() {
   hs2 = new HScrollbar(1000, height-50, width, 16, 16);
 
   //ic = new icon[drawSetting.ICON_NUM];
-  ic = new icon[4];
+  ic = new ellipseIcon[4];
   
-  ic[0] = new icon();
+  ic[0] = new ellipseIcon();
   ic[0].init(1);//menu->zumo initialize
   ic[0].setBackground(134,226,213);
   ic[0].setPosition(100,400);
-  ic[1] = new icon();
+  ic[1] = new ellipseIcon();
   ic[1].init(2);//menu->color Sensor initialize
   ic[1].setBackground(134,226,213);
   ic[1].setPosition(210,400);
   
-  ic[2] = new icon();
+  ic[2] = new ellipseIcon();
   ic[2].init(3);//menu->color Sensor initialize
   ic[2].setBackground(134,226,213);
   ic[2].setPosition(320,400);
