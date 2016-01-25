@@ -17,14 +17,21 @@ public static class drawSetting {
 public class drawFunction extends drawSetting {
 
   PImage star; // for position
-  PImage birdEye;//俯瞰図
+  //PImage birdEye;//俯瞰図
   
   PImage icon[][];
 
 
+  birdEye birdeye;
+ 
+
+
+  
+
+
   drawFunction() {
 
-    birdEye = loadImage("media/image1.png"); 
+     birdeye  = new birdEye();
 
     star = loadImage("media/star.png");
     
@@ -193,8 +200,8 @@ public class drawFunction extends drawSetting {
       stroke(0, 0, 255);
       line((i-1)*10, y_p, i*10, y );
       
-      stroke(red[i], green[i],blue[i]);
-      fill(red[i], green[i],blue[i]);
+      stroke(red[i]*255.0/100, green[i]*255.0/100,blue[i]*255.0/100);
+      fill(red[i]*255.0/100, green[i]*255.0/100,blue[i]*255.0/100);
       rect((i-1)*10,height*0.3,i*10,height*0.1);
     }
   }
@@ -302,4 +309,5 @@ public class drawFunction extends drawSetting {
     a.noFill();
   }
 }
+
 

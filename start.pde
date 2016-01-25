@@ -1,7 +1,26 @@
 import processing.serial.*;
 
+boolean DEBUG_MODE = true;
 
-Serial port;
+public class setting {
+  //zumo
+  public static final String SERIAL_COM_PORT = "COM10";
+  public static final int SERIAL_COM_BAUND_RATE = 57600;
+
+  //othre arduino  
+  public static final String SERIAL_COM_PORT_2 = "COM1";
+  public static final int SERIAL_COM_BAUND_RATE_2 = 57600;
+
+  //screen size 1366x768
+  public static final int WINDOW_MAIN_X = 1366;
+  public static final int WINDOW_MAIN_Y = 768;
+}
+
+
+
+
+Serial port;//zumo
+Serial port2;//other arduino
 
 
 
@@ -59,16 +78,6 @@ int  zone1_point[] = new int[5];
 HScrollbar hs1, hs2;
 ellipseIcon[] ic;
 
-public class setting {
-  public static final String SERIAL_COM_PORT = "COM10";
-  public static final int SERIAL_COM_BAUND_RATE = 57600;
-
-
-
-  public static final int WINDOW_MAIN_X = 1280;
-  public static final int WINDOW_MAIN_Y = 720;
-}
-
 
 void setup() {
   //make instances
@@ -77,7 +86,7 @@ void setup() {
   hs2 = new HScrollbar(1000, height-50, width, 16, 16);
 
   //ic = new icon[drawSetting.ICON_NUM];
-  ic = new ellipseIcon[4];
+  ic = new ellipseIcon[5];
   
   ic[0] = new ellipseIcon();
   ic[0].init(1);//menu->zumo initialize
@@ -89,10 +98,20 @@ void setup() {
   ic[1].setPosition(210,400);
   
   ic[2] = new ellipseIcon();
-  ic[2].init(3);//menu->color Sensor initialize
+  ic[2].init(3);//menu->zone6
   ic[2].setBackground(134,226,213);
   ic[2].setPosition(320,400);
+ 
+  ic[3] = new ellipseIcon();
+  ic[3].init(4);//menu->zone3
+  ic[3].setBackground(134,226,213);
+  ic[3].setPosition(430,400);
   
+  ic[4] = new ellipseIcon();
+  ic[4].init(5);//menu->zone1
+  ic[4].setBackground(134,226,213);
+  ic[4].setPosition(540,400);
+ 
   
   
   size(setting.WINDOW_MAIN_X, setting.WINDOW_MAIN_Y);
@@ -118,23 +137,29 @@ void setup() {
 
   count = 0;
   intervalTime=0;
+  
   //port = new Serial(this, setting.SERIAL_COM_PORT, setting.SERIAL_COM_BAUND_RATE );
 }
 
 void draw() {
   background(255);
-
+  
+  
+  d.birdeye.draw(this);
 
 
   d.drawTab(this, view);
   ic[0].draw();
   ic[1].draw();
   ic[2].draw();
+  ic[3].draw();
+  ic[4].draw();
  
   switch(view) {
   case 0://main
 
-    image(d.birdEye, 0, d.TAB_Y);
+    //image(d.birdEye, 0, d.TAB_Y);
+    d.birdeye.draw(this);
 
     d.drawCurrentPosition(this);
 
@@ -148,12 +173,10 @@ void draw() {
   case 1://line grapg
     d.drawColorLineGraph(this);
     break;
-  case 2:
-
+  case 2://zone3
     drawZone3();
     break;
-
-  case 3:
+  case 3://zone6
 
     if (zone6AutomationFlag==1) {
       noStroke();
@@ -176,7 +199,13 @@ void draw() {
     d.drawZone6(this);
     d.drawZone6Tab(this, zone6AutomationFlag) ;
     break;
+    
+  case 4: //zone1
+    
+    
+    break;
   }
+  
 
 
   /*
@@ -228,12 +257,16 @@ void mouseDragged(){
   ic[0].checkDrag();
   ic[1].checkDrag();
   ic[2].checkDrag();
+  ic[3].checkDrag();
+  ic[4].checkDrag();
 }
 void mousePressed() {
   
   ic[0].checkClick();
   ic[1].checkClick();
   ic[2].checkClick();
+  ic[3].checkClick();
+  ic[4].checkClick();
 
   
   
@@ -371,7 +404,7 @@ void serialEvent(Serial p) { // p is anonymous
         motorLLog[motorCount]=motorL;
         motorRLog[motorCount]=motorR;
         azimthLog[motorCount]=azimuth;
-        if (red[red.length-1]>blue[red.length-1]) {
+        if (red[red.length-1]>blue[red.length-1] && blue[red.length-1] < 40) {
           colorLog[motorCount]=1;
         } else {
           colorLog[motorCount]=0;

@@ -35,9 +35,17 @@ public class icon {
        data = new PImage[1];
       data[0] = loadImage("media/color0.png");    
     }
-   else if (t==3){// colorsensor
+   else if (t==3){// zone6
        data = new PImage[1];
       data[0] = loadImage("media/zone6.png");    
+    }
+   else if (t==4){// zone3
+       data = new PImage[1];
+      data[0] = loadImage("media/zone3.png");    
+    }
+   else if (t==5){// zone1
+       data = new PImage[1];
+      data[0] = loadImage("media/zone1.png");    
     }
   }  
   void setBackground(int r, int g, int b) {
@@ -74,9 +82,12 @@ public class icon {
 
   void clicked(){
     //iconColor[0]=0;
-    if(type==1)view=0;
-    else if(type==2)view=1;
-    else if(type==3)view=3;
+    if(type==1)view=0;//top
+    else if(type==2)view=1;//colorgraph
+    else if(type==3)view=3;//zone6
+    else if(type==4)view=2;//zone3
+      else if(type==5)view=4;//zone1
+  
   }
 
   void dragged(){
