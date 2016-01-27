@@ -1,17 +1,18 @@
 
-int i, j, k, a, val;
+int a, val;
 int x, y, z;
 int[][] iro = {{0,0,0,0,0,0,0},{0,1,2,3,1,2,0},{0,5,5,5,5,5,0},{0,5,5,5,5,5,0},{0,5,5,5,5,5,0,},{0,5,5,5,5,5,0},{0,0,0,0,0,0,0}}; 
 int[] patern = {1,2,3}; 
 int AcountFlag = 0;
 int BcountFlag = 0;
 
-
+int pos3x=100;
+int pos3y=100;
 
 void find(){
-  for(i = 1; i < 6; i++){
+  for(int i = 1; i < 6; i++){
     
-    for(j = 1; j < 6; j++){
+    for(int j = 1; j < 6; j++){
       
       if(iro[i][j] == patern[0]){ //find1
         
@@ -161,18 +162,23 @@ void find(){
 
 
 void drawZone3(){
-   fill(0);
+  
+  find();
+  int i,j,k;
+  fill(100,100,100);
+  stroke(100,100,100);
   noFill();
-  quad(8, 100, 692, 100, 692, 380, 8, 380);
-  line(230, 100, 230, 380);
-  line(460, 100, 460, 380);
+  quad(8+pos3x, 100+pos3y, 692+pos3x, 100+pos3y, 692+pos3x, 380+pos3y, 8+pos3x, 380+pos3y);
+  line(230+pos3x, 100+pos3y, 230+pos3x, 380+pos3y);
+  line(460+pos3x, 100+pos3y, 460+pos3x, 380+pos3y);
   textSize(20);
-  text("5x5", 15, 90);
-  text("seikainopatern", 235, 90);
-  text("sikakkei", 470, 90);
-  text(x, 237, 330);
-  text(y, 325, 330);
-  text(z, 373, 330);
+  text("5x5", 15+pos3x, 90+pos3y);
+  text("patern", 235+pos3x, 90+pos3y);
+  text("quad", 470+pos3x, 90+pos3y);
+  text(x, 237+pos3x, 330+pos3y);
+  text(y, 325+pos3x, 330+pos3y);
+  text(z, 373+pos3x, 330+pos3y);
+  x=0;y=0;z=0;
  
   for(i=1; i<6; i++){
     
@@ -191,7 +197,7 @@ void drawZone3(){
         fill(0);
         noFill();
      }
-      quad(19-40 + j*40, 140-40 + i*40, 59-40 + j*40, 140-40 + i*40, 59-40 + j*40, 180-40 + i*40, 19-40 + j*40, 180-40 + i*40);
+      quad(19-40 + j*40+pos3x, 140-40 + i*40+pos3y, 59-40 + j*40+pos3x, 140-40 + i*40+pos3y, 59-40 + j*40+pos3x, 180-40 + i*40+pos3y, 19-40 + j*40+pos3x, 180-40 + i*40+pos3y);
     }
   }
   
@@ -210,22 +216,21 @@ void drawZone3(){
     }
     
     if(k == 0){
-      quad(277,270, 317,270, 317,310, 277,310);
-      quad(325,270, 365,270, 365,310, 325,310);
-      quad(373,270, 413,270, 413,310, 373,310);
+      quad(277+pos3x,270+pos3y, 317+pos3x,270+pos3y, 317+pos3x,310+pos3y, 277+pos3x,310+pos3y);
+      quad(325+pos3x,270+pos3y, 365+pos3x,270+pos3y, 365+pos3x,310+pos3y, 325+pos3x,310+pos3y);
+      quad(373+pos3x,270+pos3y, 413+pos3x,270+pos3y, 413+pos3x,310+pos3y, 373+pos3x,310+pos3y);
     }
     else if(k == 1){
-      quad(237,270, 277,270, 277,310, 237,310);
-      quad(325,230, 365,230, 365,270, 325,270);
-      quad(413,270, 453,270, 453,310, 413,310);
+      quad(237+pos3x,270+pos3y, 277+pos3x,270+pos3y, 277+pos3x,310+pos3y, 237+pos3x,310+pos3y);
+      quad(325+pos3x,230+pos3y, 365+pos3x,230+pos3y, 365+pos3x,270+pos3y, 325+pos3x,270+pos3y);
+      quad(413+pos3x,270+pos3y, 453+pos3x,270+pos3y, 453+pos3x,310+pos3y, 413+pos3x,310+pos3y);
     }
     else if(k == 2){
-      quad(237,230, 277,230, 277,270, 237,270);
-      quad(325,190, 365,190, 365,230, 325,230);
-      quad(413,230, 453,230, 453,270, 413,270);
+      quad(237+pos3x,230+pos3y, 277+pos3x,230+pos3y, 277+pos3x,270+pos3y, 237+pos3x,270+pos3y);
+      quad(325+pos3x,190+pos3y, 365+pos3x,190+pos3y, 365+pos3x,230+pos3y, 325+pos3x,230+pos3y);
+      quad(413+pos3x,230+pos3y, 453+pos3x,230+pos3y, 453+pos3x,270+pos3y, 413+pos3x,270+pos3y);
     }    
   }
-  find();
 
 
 }

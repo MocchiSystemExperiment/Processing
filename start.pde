@@ -4,8 +4,8 @@ boolean DEBUG_MODE = true;
 
 public class setting {
   //zumo
-  public static final String SERIAL_COM_PORT = "COM10";
-  public static final int SERIAL_COM_BAUND_RATE = 57600;
+  public static final String SERIAL_COM_PORT = "COM18";
+  public static final int SERIAL_COM_BAUND_RATE = 9600;
 
   //othre arduino  
   public static final String SERIAL_COM_PORT_2 = "COM1";
@@ -87,33 +87,29 @@ void setup() {
 
   //ic = new icon[drawSetting.ICON_NUM];
   ic = new ellipseIcon[5];
-  
-  ic[0] = new ellipseIcon();
-  ic[0].init(1);//menu->zumo initialize
-  ic[0].setBackground(134,226,213);
-  ic[0].setPosition(100,400);
-  ic[1] = new ellipseIcon();
-  ic[1].init(2);//menu->color Sensor initialize
-  ic[1].setBackground(134,226,213);
-  ic[1].setPosition(210,400);
-  
-  ic[2] = new ellipseIcon();
-  ic[2].init(3);//menu->zone6
-  ic[2].setBackground(134,226,213);
-  ic[2].setPosition(320,400);
- 
-  ic[3] = new ellipseIcon();
-  ic[3].init(4);//menu->zone3
-  ic[3].setBackground(134,226,213);
-  ic[3].setPosition(430,400);
-  
-  ic[4] = new ellipseIcon();
-  ic[4].init(5);//menu->zone1
-  ic[4].setBackground(134,226,213);
-  ic[4].setPosition(540,400);
- 
-  
-  
+
+
+  for (int i=0; i<5; i++) {
+    ic[i] = new ellipseIcon();
+    ic[i].init(i+1);
+  }
+  ic[0].setBackground(134, 226, 213);
+  ic[0].setPosition(0, 0);
+
+  ic[1].setBackground(134, 226, 213);
+  ic[1].setPosition(110, 0);
+
+  ic[2].setBackground(134, 226, 213);
+  ic[2].setPosition(220, 0);
+
+  ic[3].setBackground(134, 226, 213);
+  ic[3].setPosition(330, 0);
+
+  ic[4].setBackground(134, 226, 213);
+  ic[4].setPosition(440, 0);
+
+
+
   size(setting.WINDOW_MAIN_X, setting.WINDOW_MAIN_Y);
   background(255);
 
@@ -137,24 +133,25 @@ void setup() {
 
   count = 0;
   intervalTime=0;
-  
+
   //port = new Serial(this, setting.SERIAL_COM_PORT, setting.SERIAL_COM_BAUND_RATE );
 }
 
 void draw() {
   background(255);
-  
-  
-  d.birdeye.draw(this);
 
 
-  d.drawTab(this, view);
+
+
+  // d.drawTab(this, view);
+
+
   ic[0].draw();
   ic[1].draw();
   ic[2].draw();
   ic[3].draw();
   ic[4].draw();
- 
+
   switch(view) {
   case 0://main
 
@@ -165,8 +162,8 @@ void draw() {
 
 
     d.drawInfo(this, 800);
-    
-    
+
+
 
 
     break;
@@ -199,13 +196,13 @@ void draw() {
     d.drawZone6(this);
     d.drawZone6Tab(this, zone6AutomationFlag) ;
     break;
-    
+
   case 4: //zone1
-    
-    
+
+
     break;
   }
-  
+
 
 
   /*
@@ -222,54 +219,28 @@ void draw() {
 
 
 
-
-
-
-
-  stroke(255);
-  fill(255);
-  textSize(50);
-  fill(0);
-  text("zone = ", 10, height-10);
-  text((int)zoneNumber, 200, height-10);
-  text(", ", 225, height-10);
-  text((int)mode, 250, height-10);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   if ( count == 120 ) {
     count = 0;
     background(255);
   }
 }
-void mouseDragged(){
-  ic[0].checkDrag();
-  ic[1].checkDrag();
-  ic[2].checkDrag();
-  ic[3].checkDrag();
-  ic[4].checkDrag();
+void mouseDragged() {
+  /*ic[0].checkDrag();
+   ic[1].checkDrag();
+   ic[2].checkDrag();
+   ic[3].checkDrag();
+   ic[4].checkDrag();*/
 }
 void mousePressed() {
-  
+
   ic[0].checkClick();
   ic[1].checkClick();
   ic[2].checkClick();
   ic[3].checkClick();
   ic[4].checkClick();
 
-  
-  
+
+
   //menu select tab
   if (mouseY<drawFunction.TAB_Y) {
     for (int i=0; i < drawFunction.TAB_NAME.length; i++) {
@@ -301,10 +272,10 @@ void mousePressed() {
 void serialEvent(Serial p) { // p is anonymous  
   // Serial port ;//= com.getSerialNumber();
   // if(port!=p)return;
-
+  int h, l;
   if ( p.available() >= 34 ) {
     lastConnectedTime=millis();
-  
+
     int f=p.read();
     if (f  == 'Z' ) {
       int point = p.read();
@@ -338,51 +309,6 @@ void serialEvent(Serial p) { // p is anonymous
 
 
 
-      //get  max/min values of geomagnetic sensor
-      int h = p.read(), l = p.read(); 
-      max_x=(int)(h<<8|l); 
-      if (max_x > 32767) max_x -= 65536;         
-      h = p.read(); 
-      l = p.read(); 
-      max_y=(int)(h<<8|l); 
-      if (max_y > 32767) max_y -= 65536;         
-      h = p.read(); 
-      l = p.read(); 
-      min_x=(int)(h<<8|l); 
-      if (min_x > 32767) min_x -= 65536;         
-      h = p.read(); 
-      l = p.read(); 
-      min_y=(int)(h<<8|l); 
-      if (min_y > 32767) min_y -= 65536;         
-      // get the current sensor values of geomagnetic sensor
-      h = p.read(); 
-      l = p.read(); 
-      mx=(int)(h<<8|l); 
-      if (mx > 32767) mx -= 65536;         
-      h = p.read(); 
-      l = p.read(); 
-      my=(int)(h<<8|l); 
-      if (my > 32767) my -= 65536;
-
-      h = p.read(); 
-      l = p.read();
-      ax=(int)(h<<8|l); 
-      if (ax > 32767) ax -= 65536;         
-      h = p.read(); 
-      l = p.read(); 
-      ay=(int)(h<<8|l); 
-      if (ay > 32767) ay -= 65536;         
-      h = p.read(); 
-      l = p.read(); 
-      az=(int)(h<<8|l); 
-      if (az > 32767) az -= 65536;         
-      //get the direction      
-      h = p.read(); 
-      l = p.read(); 
-      azimuth=(int)(h<<8|l); 
-      if (azimuth > 32767) azimuth -= 65536;
-
-
       intervalTime = ((((((p.read()<<8)+p.read())<<8)+p.read())<<8)+p.read());
 
       h = p.read(); 
@@ -395,6 +321,12 @@ void serialEvent(Serial p) { // p is anonymous
       l = p.read(); 
       motorL=(int)(h<<8|l); 
       if ( motorL> 32767) motorL -= 65536;
+
+      //get the direction      
+      h = p.read(); 
+      l = p.read(); 
+      azimuth=(int)(h<<8|l); 
+      if (azimuth > 32767) azimuth -= 65536;
 
 
 
@@ -412,7 +344,48 @@ void serialEvent(Serial p) { // p is anonymous
         motorCount++;
         if (motorCount==5000)motorCount=0;
       }
+    } else if ( f == 'D' ) {
 
+      //get  max/min values of geomagnetic sensor
+      h = p.read();
+      l = p.read(); 
+      max_x=(int)(h<<8|l); 
+      if (max_x > 32767) max_x -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      max_y=(int)(h<<8|l); 
+      if (max_y > 32767) max_y -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      min_x=(int)(h<<8|l); 
+      if (min_x > 32767) min_x -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      min_y=(int)(h<<8|l); 
+      if (min_y > 32767) min_y -= 65536;
+    } else if ( f == 'M' ) {
+      // get the current sensor values of geomagnetic sensor
+      h = p.read(); 
+      l = p.read(); 
+      mx=(int)(h<<8|l); 
+      if (mx > 32767) mx -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      my=(int)(h<<8|l); 
+      if (my > 32767) my -= 65536;
+    } else if ( f == 'A' ) {
+      h = p.read(); 
+      l = p.read();
+      ax=(int)(h<<8|l); 
+      if (ax > 32767) ax -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      ay=(int)(h<<8|l); 
+      if (ay > 32767) ay -= 65536;         
+      h = p.read(); 
+      l = p.read(); 
+      az=(int)(h<<8|l); 
+      if (az > 32767) az -= 65536;         
 
 
       //p.clear(); // 念のためクリア

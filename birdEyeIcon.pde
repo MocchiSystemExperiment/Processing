@@ -1,7 +1,7 @@
 class birdEyeIcon {
   int x, y;
-  int size_x =70;
-  int size_y = 70;
+  int size_x =150;
+  int size_y = 150;
 
   //background color RGB 
   int[] iconColor;
@@ -11,6 +11,7 @@ class birdEyeIcon {
 
   //1==menu->zumo0
   int type;
+  int zone=0;
 
   birdEyeIcon () {
     x=0;
@@ -25,6 +26,7 @@ class birdEyeIcon {
       iconColor[1]=100;
       iconColor[2]=100;
     }
+    zone=t;
   }
   void setBackground(int r, int g, int b) {
     iconColor[0] = r;
@@ -38,11 +40,23 @@ class birdEyeIcon {
 
   void draw(PApplet p) {
     
+    if(zoneNumber==9 && zone==7){
+      stroke(200,200,200);
+      fill(200,200,200);
+      rect(x-10, y-10, size_x+20, size_y+20);
+    }else if(zoneNumber==8){
+    }else if (zoneNumber==zone+1){
+      stroke(200,200,200);
+      fill(200,200,200);
+      rect(x-10, y-10, size_x+20, size_y+20);
+    }
     //if (status==0)return;
     stroke(iconColor[0], iconColor[1], iconColor[2]);
     fill(iconColor[0], iconColor[1], iconColor[2]);
     
     rect(x, y, size_x, size_y);
+    
+    
   }
 }
 

@@ -8,8 +8,8 @@ public static class drawSetting {
   public static final String[] ZONE6_TAB_NAME = {
     "auto", "man"
   };
-  
-  
+
+
   public static final int ICON_NUM = 4;
 }
 
@@ -18,51 +18,51 @@ public class drawFunction extends drawSetting {
 
   PImage star; // for position
   //PImage birdEye;//俯瞰図
-  
+
   PImage icon[][];
 
 
   birdEye birdeye;
- 
 
 
-  
+
+
 
 
   drawFunction() {
 
-     birdeye  = new birdEye();
+    birdeye  = new birdEye();
 
     star = loadImage("media/star.png");
-    
+
     icon = new PImage[drawSetting.ICON_NUM][3];
-    
   }
 
 
 
   public  void drawCurrentPosition(PApplet a) {
-    if (zoneNumber==1)a.image(d.star, 265, 33);
-    else if (zoneNumber==2)a.image(d.star, 144, 33);
-    else if (zoneNumber==3)a.image(d.star, 25, 33);
-    else if (zoneNumber==4)a.image(d.star, 22, 231);
-    else if (zoneNumber==5)a.image(d.star, 144, 231);
-    else if (zoneNumber==6)a.image(d.star, 265, 231);
-    else if (zoneNumber==7) {
-      a.image(d.star, 357, 231);
+
+    if (zoneNumber>=1 && zoneNumber<=6) {
+      fill(150, 150, 150);
       textSize(50);
-      fill(0, 255, 0);
-      text("GOAL! ", 100, 205);
+      text("zone", 20, 400);
+      text((int)zoneNumber, 150, 400);
+      text("/", 180, 400);
+      text((int)mode, 210, 400);
+    } else if (zoneNumber==7) {
+      textSize(50);
+      fill(100, 255, 100);
+      text("GOAL! ", 20, 400);
       noFill();
     } else if (zoneNumber==8) {
       textSize(50);
-      fill(0, 255, 255);
-      text("Moving", 100, 180);
+      fill(100, 100, 255);
+      text("Moving", 20, 400);
       noFill();
     } else if (zoneNumber==0) {
       textSize(50);
-      fill(0, 255, 0);
-      text("NO DATA", 100, 180);
+      fill(100, 255, 100);
+      text("NO DATA", 20, 400);
       noFill();
     }
   }
@@ -76,10 +76,10 @@ public class drawFunction extends drawSetting {
 
     double startX=width/4;
     double startY=height/2;
-    double X,Y;
+    double X, Y;
 
     stroke(0, 0, 0);
-    
+
     for (int i=2; i<5000-1; i++) {
       if (azimthLog[i]==-1)break;
       if (colorLog[i]==1)    stroke(255, 0, 0);
@@ -93,8 +93,8 @@ public class drawFunction extends drawSetting {
       startX-=X;
       startY-=Y;
     }
-    
-    
+
+
     startX=width/4*3;
     startY=height/2;    
     for (int i=2; i<5000-1; i++) {
@@ -104,7 +104,7 @@ public class drawFunction extends drawSetting {
 
       float sum = azimthLog[i]+azimthLog[i-1]+azimthLog[i-2];
 
-      if(zone6AutomationFlag == 1 ){
+      if (zone6AutomationFlag == 1 ) {
         if (motorLLog[i] == -motorRLog[i]) {
           X=zone6BarVal2/20*cos(radians(sum/3));
           Y=zone6BarVal2/20*sin(radians(sum/3));
@@ -112,7 +112,7 @@ public class drawFunction extends drawSetting {
           X=zone6BarVal1/20*cos(radians(sum/3));
           Y=zone6BarVal1/20*sin(radians(sum/3));
         }
-      }else{
+      } else {
         if (motorLLog[i] == -motorRLog[i]) {
           X=5.0*zone6Rate*cos(radians(sum/3));
           Y=5.0*zone6Rate*sin(radians(sum/3));
@@ -120,7 +120,6 @@ public class drawFunction extends drawSetting {
           X=5.0*cos(radians(sum/3));
           Y=5.0*sin(radians(sum/3));
         }
-      
       }
 
       line((int)startX, (int)startY, (int)(startX-X), (int)(startY-Y));
@@ -135,10 +134,10 @@ public class drawFunction extends drawSetting {
     for (int i=0; i<ZONE6_TAB_NAME.length; i++) {
       if (view==i) {
         a.fill(0);
-      }else{
-        a.fill(255); 
+      } else {
+        a.fill(255);
       }
-      
+
       a.rect(width-TAB_X*(i+1), 0, TAB_X, TAB_Y);
 
 
@@ -159,28 +158,28 @@ public class drawFunction extends drawSetting {
 
 
   public  void drawZone6CalcBotton(PApplet a) {
-      a.stroke(0);
-      a.fill(255);
+    a.stroke(0);
+    a.fill(255);
 
-      a.rect(width-TAB_X, TAB_Y, TAB_X, TAB_Y);
+    a.rect(width-TAB_X, TAB_Y, TAB_X, TAB_Y);
 
-      a.fill(0);
-      a.stroke(0);
+    a.fill(0);
+    a.stroke(0);
 
 
-      a.text("Calc", width-TAB_X+5, TAB_Y+13);
-      a.stroke(0);
-      a.noFill();
+    a.text("Calc", width-TAB_X+5, TAB_Y+13);
+    a.stroke(0);
+    a.noFill();
   }
 
 
   public  void drawColorLineGraph(PApplet a) {
 
     float y_p, y;
-    
+
     stroke(0, 0, 0);
-    line(0,height*0.8+1,width,height*0.8+1);
-    line(0,height*0.5-1,width,height*0.5-1);
+    line(0, height*0.8+1, width, height*0.8+1);
+    line(0, height*0.5-1, width, height*0.5-1);
 
     for (int i=1; i<red.length; i++) {
 
@@ -199,10 +198,10 @@ public class drawFunction extends drawSetting {
       y = map(blue[i], 0, 100, height*0.8, height*0.5);
       stroke(0, 0, 255);
       line((i-1)*10, y_p, i*10, y );
-      
-      stroke(red[i]*255.0/100, green[i]*255.0/100,blue[i]*255.0/100);
-      fill(red[i]*255.0/100, green[i]*255.0/100,blue[i]*255.0/100);
-      rect((i-1)*10,height*0.3,i*10,height*0.1);
+
+      stroke(red[i]*255.0/100, green[i]*255.0/100, blue[i]*255.0/100);
+      fill(red[i]*255.0/100, green[i]*255.0/100, blue[i]*255.0/100);
+      rect((i-1)*10, height*0.3, i*10, height*0.1);
     }
   }
 
@@ -216,10 +215,10 @@ public class drawFunction extends drawSetting {
     for (int i=0; i<TAB_NAME.length; i++) {
       if (view==i) {
         a.fill(0);
-      }else{
-        a.fill(255); 
+      } else {
+        a.fill(255);
       }
-      
+
       a.rect(TAB_X*i, 0, TAB_X, TAB_Y);
 
 
@@ -244,11 +243,12 @@ public class drawFunction extends drawSetting {
     a.fill(255);
     a.textSize(50);
     a.fill(0);
+    /*
     a.text("zone = ", 10, height-10);
     a.text((int)zoneNumber, 200, height-10);
     a.text(", ", 225, height-10);
     a.text((int)mode, 250, height-10);
-
+*/
 
     a.textSize(15);
     a.text("max_x/y = ", x, 20);
@@ -309,5 +309,4 @@ public class drawFunction extends drawSetting {
     a.noFill();
   }
 }
-
 
